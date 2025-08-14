@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+<div class="container mt-4">
+  <h2>Add New Destination</h2>
+  <form action="/admin/destinations/add" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" name="description" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Best Time to Visit</label>
+      <input type="text" class="form-control" name="bestTimeToVisit" required>
+    </div>
+    
+<div class="mb-3">
+  <label for="mustVisit" class="form-label">Must Visit Places (comma-separated)</label>
+  <input type="text" name="mustVisit" id="mustVisit" class="form-control" placeholder="e.g., Eiffel Tower, Louvre Museum" required>
+</div>
+
+    <div class="mb-3">
+      <label class="form-label">Upload Image</label>
+      <input type="file" class="form-control" name="image" accept="image/*" required>
+    </div>
+
+    <button type="submit" class="btn btn-success mb-3">Add Destination</button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

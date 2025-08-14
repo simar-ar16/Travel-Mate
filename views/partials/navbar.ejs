@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">TravelMate</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <% if (user) { %>
+          <!-- Logged-in navbar -->
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/destinations">Destinations</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/guide">Book a Guide</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/trip-planner">Trip Planner</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/blogs">Travel Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user/profile">View Profile</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-outline-warning btn-sm px-3" href="#" onclick="confirmLogout(event)">Logout</a>
+          </li>
+        <% } else { %>
+          <!-- Guest navbar -->
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/#features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-outline-light btn-sm px-3" href="/user/login">Login</a>
+          </li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-warning btn-sm px-3" href="/user/signup">Signup</a>
+          </li>
+        <% } %>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<script>
+  function confirmLogout(event) {
+    event.preventDefault(); // prevent default link behavior
+    if (confirm("Are you sure you want to logout?")) {
+      window.location.href = "/user/logout";
+    }
+  }
+</script>

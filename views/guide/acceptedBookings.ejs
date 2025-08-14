@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accepted Bookings | TravelMate</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-yellow: #FFC107;
+      --primary-yellow-light: #FFF3CD;
+      --primary-dark: #212529;
+      --primary-light: #F8F9FA;
+      --success-color: #198754;
+      --success-light: #D1E7DD;
+    }
+    
+    body {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-family: 'Poppins', sans-serif;
+      padding-top: 80px;
+      min-height: 100vh;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .page-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-yellow);
+      position: relative;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+
+    .page-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--primary-yellow);
+      border-radius: 2px;
+    }
+
+    .page-subtitle {
+      color: #6C757D;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+        .btn-yellow {
+            background-color: #ffc107;
+            color: #212529;
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 8px 20px;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-yellow:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+
+
+    .booking-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      border: none;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .booking-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background-color: var(--success-color);
+    }
+
+    .booking-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(255, 193, 7, 0.15);
+    }
+
+    .card-header {
+      background-color: white;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .destination-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background-color: var(--primary-yellow-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-yellow);
+      font-size: 1.5rem;
+      margin-right: 15px;
+    }
+
+    .destination-info h5 {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .destination-info p {
+      color: #6C757D;
+      font-size: 0.9rem;
+      margin-bottom: 0;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .detail-item {
+      margin-bottom: 15px;
+    }
+
+    .detail-label {
+      font-weight: 500;
+      color: #495057;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+    }
+
+    .detail-value {
+      color: var(--primary-dark);
+      font-weight: 400;
+      font-size: 1rem;
+    }
+
+    .traveler-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .traveler-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      margin-right: 12px;
+    }
+
+    .traveler-text h6 {
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    .traveler-text small {
+      color: #6C757D;
+      font-size: 0.8rem;
+    }
+
+    .status-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background-color: var(--success-light);
+      color: var(--success-color);
+    }
+
+    .message-card {
+      background-color: #F8F9FA;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .message-label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .message-label i {
+      margin-right: 8px;
+      color: var(--primary-yellow);
+    }
+
+    .message-content {
+      color: var(--primary-dark);
+      line-height: 1.5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .empty-state-icon {
+      font-size: 3.5rem;
+      color: var(--primary-yellow-light);
+      margin-bottom: 20px;
+    }
+
+    .empty-state-title {
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+    }
+
+    .empty-state-text {
+      color: #6C757D;
+      font-size: 1rem;
+      max-width: 400px;
+      margin: 0 auto 30px;
+    }
+
+    .btn-explore {
+      background-color: var(--primary-yellow);
+      color: var(--primary-dark);
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 10px 20px;
+    }
+    .user-profile-link {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ffc107;
+}
+
+.user-profile-placeholder {
+  width: 40px;
+  height: 40px;
+  background-color: #e9ecef;
+  color: #6c757d;
+  font-size: 1.2rem;
+  border: 2px solid #ffc107;
+}
+
+
+    @media (max-width: 768px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-title {
+        font-size: 1.8rem;
+      }
+      
+      .page-subtitle {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('../partials/guide-navbar') %>
+
+  <div class="container mb-5">
+    <div class="page-header">
+      <h1 class="page-title">Accepted Bookings</h1>
+      <p class="page-subtitle">View and manage all your confirmed bookings with travelers</p>
+    </div>
+
+    <% if (acceptedRequests.length === 0) { %>
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+        <h4 class="empty-state-title">No Accepted Bookings Yet</h4>
+        <p class="empty-state-text">
+          When you accept booking requests from travelers, they will appear here as confirmed bookings.
+        </p>
+        <a href="/guide/requests" class="btn btn-explore">
+          <i class="bi bi-arrow-left"></i> View Booking Requests
+        </a>
+      </div>
+    <% } else { %>
+      <div class="row">
+        <% acceptedRequests.forEach(request => { %>
+          <div class="col-lg-8 mx-auto">
+            <div class="booking-card">
+              <span class="status-badge">
+                <i class="bi bi-check-circle-fill me-1"></i> Accepted
+              </span>
+              
+              <div class="card-header">
+                <div class="destination-icon">
+                  <i class="bi bi-geo-alt"></i>
+                </div>
+                <div class="destination-info">
+                  <h5><%= request.trip.destination.name %></h5>
+                  <p><%= request.days %> day trip • <%= request.numberOfPeople %> traveler<%= request.numberOfPeople > 1 ? 's' : '' %></p>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <div class="traveler-info">
+                  <div class="user-info d-flex align-items-center">
+  <a href="/user/<%= request.traveler._id %>" target="_blank" class="user-profile-link me-3">
+    <% if (request.traveler.profileImage) { %>
+      <img src="<%= request.traveler.profileImage %>" alt="<%= request.traveler.name %>" class="rounded-circle user-profile-img" />
+    <% } else { %>
+      <div class="rounded-circle user-profile-placeholder d-flex align-items-center justify-content-center">
+        <i class="bi bi-person-fill"></i>
+      </div>
+    <% } %>
+  </a>
+</div>
+
+
+                  <div class="traveler-text">
+                    <h6><%= request.traveler.name %></h6>
+                    <small><%= request.traveler.email %></small>
+                  </div>
+                </div>
+                
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <div class="detail-label">Start Date</div>
+                    <div class="detail-value"><%= new Date(request.startDate).toLocaleDateString() %></div>
+                  </div>
+                  
+                  <div class="detail-item">
+                    <div class="detail-label">Duration</div>
+                    <div class="detail-value"><%= request.days %> days</div>
+                  </div>
+                  
+                  <div class="detail-item">
+                    <div class="detail-label">Group Size</div>
+                    <div class="detail-value"><%= request.numberOfPeople %> people</div>
+                  </div>
+                  
+                  <div class="detail-item">
+                    <div class="detail-label">End Date</div>
+                    <div class="detail-value"><%= new Date(request.endDate).toLocaleDateString() %></div>
+                  </div>
+                  <div class="d-flex justify-content-end mt-3">
+  <a href="/chat/<%= request._id %>" class="btn btn-yellow">
+    <i class="bi bi-chat-left-text"></i> Start Chat
+  </a>
+</div>
+                </div>
+                
+                <% if (request.message) { %>
+                  <div class="message-card">
+                    <div class="message-label">
+                      <i class="bi bi-chat-left-text"></i> Traveler's Message
+                    </div>
+                    <div class="message-content">
+                      <%= request.message %>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('../partials/guide-footer') %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

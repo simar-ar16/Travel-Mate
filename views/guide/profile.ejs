@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guide Profile | TravelMate</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    h2 {
+      font-weight: 700;
+      color: #000;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control, .form-select {
+      background-color: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+
+    .form-control:disabled {
+      background-color: #f0f0f0;
+      color: #666;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    .form-label i {
+      margin-right: 8px;
+      color: #ffc107;
+    }
+
+    .btn-warning {
+      font-weight: bold;
+      background-color: #ffc107;
+      border: none;
+      border-radius: 12px;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    .rounded-circle {
+      object-fit: cover;
+      border: 3px solid #ffc107;
+    }
+
+    .upload-input {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .reviewbutton{
+      background-color: #ffc107;
+    }
+
+    .reviewbutton:hover{
+      background-color: #ffc107;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('../partials/guide-navbar') %>
+
+  <div class="container my-5 " style="padding-top: 30px;">
+    <h2 class="mb-4 text-center">My Profile</h2>
+
+    <form action="/guide/profile" method="POST" enctype="multipart/form-data" class="glass-card mx-auto" style="max-width: 700px;">
+      <div class="mb-4 text-center">
+        <% if (guide.profileImage && guide.profileImage.url) { %>
+          <img src="<%= guide.profileImage.url %>" class="rounded-circle mb-3" width="150" height="150" alt="Profile Image">
+        <% } else { %>
+          <p>No profile image</p>
+        <% } %>
+        <input type="file" name="profileImage" class="form-control mt-2 upload-input">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-person-circle"></i>Full Name</label>
+        <input type="text" class="form-control" value="<%= guide.user.name %>" disabled>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-envelope-fill"></i>Email</label>
+        <input type="email" class="form-control" value="<%= guide.user.email %>" disabled>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-chat-left-text"></i>Bio</label>
+        <textarea name="bio" class="form-control" rows="3"><%= guide.bio %></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-star-fill"></i>Experience</label>
+        <input type="text" name="expertise" class="form-control" value="<%= guide.expertise %>">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-cash-coin"></i>Price Per Hour</label>
+        <input type="number" name="pricePerHour" class="form-control" value="<%= guide.pricePerHour %>">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-geo-alt-fill"></i>Location</label>
+        <select name="location" class="form-select">
+  <% destinations.forEach(dest => { %>
+    <option value="<%= dest.name %>" <%= dest.name === guide.location ? 'selected' : '' %>><%= dest.name %></option>
+  <% }) %>
+</select>
+
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label"><i class="bi bi-translate"></i>Languages (comma-separated)</label>
+        <input type="text" name="languages" class="form-control" value="<%= guide.languages.join(', ') %>">
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100">Update Profile</button>
+    </form>
+    <a href="/guide/<%= guide._id %>/reviews" class="reviewbutton ms-1 me-1 btn btn-yellow"><i class="bi bi-star"></i> Read all Reviews</a>
+
+   
+  </div>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>
