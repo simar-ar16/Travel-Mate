@@ -64,14 +64,20 @@
               <input type="number" name="numberOfPeople" id="numberOfPeople" class="form-control" required>
             </div>
 
+
+            <%
+  const tripStart = new Date(trip.startDate).toISOString().split('T')[0];
+  const tripEnd   = new Date(trip.endDate).toISOString().split('T')[0];
+%>
+
             <div class="mb-3">
   <label for="startDate" class="form-label">Start Date</label>
-  <input type="date" class="form-control" id="startDate" name="startDate" required>
+  <input type="date" class="form-control" id="startDate" name="startDate"  min="<%= tripStart %>" max="<%= tripEnd %>" required>
 </div>
 
 <div class="mb-3">
   <label for="endDate" class="form-label">End Date</label>
-  <input type="date" class="form-control" id="endDate" name="endDate" required>
+  <input type="date" class="form-control" id="endDate" name="endDate" min="<%= tripStart %>" max="<%= tripEnd %>" required>
 </div>
 
 
@@ -89,5 +95,17 @@
     </div>
   </div>
   <%- include('../partials/footer') %>
+  <script>
+  (function () {
+    const s = document.getElementById("startDate");
+    const e = document.getElementById("endDate");
+    s.addEventListener("change", () => {
+      e.min = s.value || e.min;
+      if (e.value && s.value && e.value < s.value) {
+        e.value = s.value;
+      }
+    });
+  })();
+</script>
 </body>
 </html>

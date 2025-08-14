@@ -63,7 +63,9 @@ router.post('/add/:id', allowRoles('traveler', 'admin'), checkForAuthentication,
     if (existing) return res.redirect('/destinations'); // Already added
 
     const { startDate, endDate, notes } = req.body;
-
+if(new Date(req.body.startDate) > new Date(req.body.endDate)) {
+  return res.status(400).json({ error: "Start date cannot be after end date" });
+}
     await TripPlan.create({
       user: req.user.id,
       destination: req.params.id,

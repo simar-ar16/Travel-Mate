@@ -23,6 +23,16 @@ router.get('/:guideId', checkForAuthentication, allowRoles('traveler','admin'), 
 router.post('/:guideId', checkForAuthentication, allowRoles('traveler','admin'), async (req, res) => {
   const guideId  = req.params.guideId;
   const {startDate, endDate, tripId, days, numberOfPeople, message } = req.body;
+// Example: in your POST /bookings route
+if (new Date(req.body.startDate) > new Date(req.body.endDate)) {
+  return res.status(400).json({ error: "Booking start date cannot be after end date" });
+}
+const trip = await TripPlan.findById(tripId);
+// Extra: ensure booking is inside trip's range
+if (new Date(req.body.startDate) < new Date(trip.startDate) ||
+    new Date(req.body.endDate) > new Date(trip.endDate)) {
+  return res.status(400).json({ error: "Booking must be within trip dates" });
+}
 
   try {
     await BookingRequest.create({

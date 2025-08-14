@@ -106,7 +106,7 @@
       <form action="/trip-planner/add/<%= destination._id %>" method="POST" class="mt-3">
         <%
           const today = new Date();
-          const maxYear = today.getFullYear() + 50;
+          const maxYear = today.getFullYear() + 5;
           const maxDate = `${maxYear}-12-31`;
           const minDate = today.toISOString().split('T')[0];
         %>
@@ -150,5 +150,19 @@
   </div>
 
   <%- include('../partials/footer') %>
+  <script>
+  (function () {
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("endDate");
+
+    // Whenever start changes, lock end.min to start
+    startInput.addEventListener("change", () => {
+      endInput.min = startInput.value || endInput.min;
+      if (endInput.value && startInput.value && endInput.value < startInput.value) {
+        endInput.value = startInput.value;
+      }
+    });
+  })();
+</script>
 </body>
 </html>
