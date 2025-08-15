@@ -13,10 +13,10 @@ router.get('/guides',checkAdmin, async (req, res) => {
   try {
     const pendingGuides = await Guide.find({ status: 'pending' }).populate('user');
     const verifiedGuides = await Guide.find({ status: 'verified' }).populate('user');
-    res.render('admin/guides', { pendingGuides, verifiedGuides });
+    res.render('admin/guides', { pendingGuides, verifiedGuides,errorMsg: null });
   } catch (err) {
     console.error(err);
-    res.send('Error loading guides');
+      res.render('admin/guides', { pendingGuides: [], verifiedGuides: [], errorMsg: 'Failed to load guides. Please try again later.' });
   }
 });
 

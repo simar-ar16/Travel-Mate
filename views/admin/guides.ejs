@@ -64,6 +64,12 @@
 <body class="bg-light">
 <%- include('../partials/navbar') %>
   <div class="container py-5">
+<% if (errorMsg) { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= errorMsg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
 
     <div class="text-center mb-5">
       <h1 class="display-5 fw-bold text-primary mb-3">Guide Verification Panel</h1>
