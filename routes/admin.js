@@ -113,4 +113,50 @@ router.get('/contacts',checkAdmin, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+router.get('/users', checkAdmin, async (req, res) => {
+  try {
+    const users = await User.find().lean();
+
+     const guides = await Guide.find().lean();
+    users.forEach(user => {
+      if (user.role === 'guide') {
+        const guideProfile = guides.find(g => g.user.toString() === user._id.toString());
+        user.guideId = guideProfile ? guideProfile._id : null;
+      }
+    });
+
+    res.render('admin/users', { users });
+  } catch (err) {
+    console.error(err);
+    res.send('Error loading users');
+  }
+});
+
+router.get('/trips', checkAdmin, async (req, res) => {
+  try {
+    const trips = await TripPlan.find()
+      .populate('user', 'name email')
+      .populate('destination', 'name')
+      .sort({ addedAt: -1 })
+      .lean();
+
+    const tripsWithAcceptedBookings = await Promise.all(
+      trips.map(async (trip) => {
+        // Only fetch accepted bookings
+        const bookings = await BookingRequest.find({ trip: trip._id, status: 'accepted' })
+          .populate('guide')
+          .lean();
+        return { ...trip, bookings };
+      })
+    );
+
+    res.render('admin/trips', { trips: tripsWithAcceptedBookings });
+  } catch (err) {
+    console.error(err);
+    res.send('Error loading trips');
+  }
+});
+
 module.exports = router;
