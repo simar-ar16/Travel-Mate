@@ -46,6 +46,8 @@ const chatRoute=require('./routes/chat');
 app.use('/chat',chatRoute);
 const reviewRoute=require('./routes/reviews');
 app.use('/reviews',reviewRoute);
+const blogRoute=require('./routes/blogs');
+app.use('/blogs',blogRoute);
 
 app.get('/', (req, res) => {
   res.render('landing');

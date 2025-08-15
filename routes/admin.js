@@ -8,6 +8,7 @@ const Guide = require('../models/Guide');
 const User = require('../models/User');
 const TripPlan = require('../models/TripPlan');
 const BookingRequest = require('../models/BookingRequest');
+const Blog = require('../models/Blog');
 
 router.get('/guides',checkAdmin, async (req, res) => {
   try {
@@ -159,4 +160,34 @@ router.get('/trips', checkAdmin, async (req, res) => {
   }
 });
 
+router.get('/blogs', checkAdmin, async (req, res) => {
+  try {
+    const blogs = await Blog.find()
+      .populate('author', 'name email')
+      .sort({ createdAt: -1 }) // newest first
+      .lean();
+const guides = await Guide.find();
+    res.render('admin/blogs', { blogs,guides });
+  } catch (err) {
+    console.error('Error fetching blogs for admin:', err);
+    res.send('Error loading blogs');
+  }
+});
+
+router.post('/blogs/:blogId/delete', checkAdmin, async (req, res) => {
+  const { blogId } = req.params;
+
+  try {
+    const deletedBlog = await Blog.findByIdAndDelete(blogId);
+
+    if (!deletedBlog) {
+      return res.status(404).send('Blog not found');
+    }
+
+    res.redirect('/admin/blogs');
+  } catch (err) {
+    console.error('Error deleting blog:', err);
+    res.status(500).send('Failed to delete blog');
+  }
+});
 module.exports = router;

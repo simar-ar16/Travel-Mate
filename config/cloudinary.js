@@ -39,4 +39,13 @@ const guideProfileStorage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'jpeg', 'png']
   }
 });
-module.exports = { cloudinary, storage, guideIdProofStorage, guideProfileStorage, userProfileStorage };
+
+const blogStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'travel-app/blogs',
+    allowed_formats: ['jpg', 'jpeg', 'png']
+  }
+});
+
+module.exports = { cloudinary, storage, guideIdProofStorage, guideProfileStorage, userProfileStorage, blogStorage };

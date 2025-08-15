@@ -129,7 +129,7 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/:id', checkForAuthentication, async (req, res) => {
+router.get('/:id',allowRoles('admin','guide','traveler'), checkForAuthentication, async (req, res) => {
   try {
     const profileuser = await User.findById(req.params.id).lean();
     if (!profileuser) {
