@@ -152,24 +152,29 @@
                 <div class="detail-value"><%= booking.trip.notes || 'N/A' %></div>
             </div>
 
-            <div class="mt-4 text-end">
-                <a href="/guide/<%= booking.guide._id %>" class="btn btn-yellow">
-  <i class="fas fa-user me-1"></i> View Guide Profile
-</a>
+            <div class="mt-4 mb-2 d-flex flex-wrap justify-content-end gap-2">
+  <!-- View Guide Profile -->
+  <a href="/guide/<%= booking.guide._id %>" class="btn btn-yellow">
+    <i class="fas fa-user me-1"></i> View Guide Profile
+  </a>
 
-<% 
-    const today = new Date();
-    const endDate = new Date(booking.endDate);
-    if (today > endDate) { 
-%>
-    <a href="/reviews/<%= booking._id %>/new" class="ms-1 me-1 btn btn-yellow"><i class="bi bi-star"></i>Leave a Review</a>
-<% } %>
+  <% 
+      const today = new Date();
+      const endDate = new Date(booking.endDate);
+      if (today > endDate) { 
+  %>
+    <!-- Leave a Review -->
+    <a href="/reviews/<%= booking._id %>/new" class="btn btn-yellow">
+      <i class="bi bi-star me-1"></i> Leave a Review
+    </a>
+  <% } %>
 
+  <!-- Start Chat -->
+  <a href="/chat/<%= booking._id %>" class="btn btn-yellow">
+    <i class="bi bi-chat-left-text me-1"></i> Start Chat
+  </a>
+</div>
 
-                <a href="/chat/<%= booking._id %>" class="btn btn-yellow">
-                    <i class="bi bi-chat-left-text"></i> Start Chat
-                </a>
-            </div>
         </div>
     </div>
 
