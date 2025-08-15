@@ -159,7 +159,13 @@ router.post('/:id/packing', allowRoles('traveler', 'admin'), checkForAuthenticat
     const trip = await TripPlan.findById(req.params.id);
     if (!trip) return res.status(404).send('Trip not found');
 
-    const newItem = req.body.item; // input name="item"
+    const newItem = req.body.item?.trim();; 
+
+      if (!newItem) {
+
+    return res.redirect(`/trip-planner/${trip._id}`);
+  }
+
     if (newItem) {
       trip.packingList.push({ name: newItem, packed: false }); // updated schema format
       await trip.save();
@@ -173,7 +179,7 @@ router.post('/:id/packing', allowRoles('traveler', 'admin'), checkForAuthenticat
 });
 
 
-router.post('/:id/packing/:index/toggle', allowRoles('traveler', 'admin'), checkForAuthentication,authorization, async (req, res) => {
+router.post('/:id/packing/:index/toggle', allowRoles('traveler', 'admin'), checkForAuthentication, async (req, res) => {
   try {
     const trip = await TripPlan.findById(req.params.id);
     if (!trip) return res.status(404).send('Trip not found');
@@ -191,7 +197,7 @@ router.post('/:id/packing/:index/toggle', allowRoles('traveler', 'admin'), check
   }
 });
 
-router.post('/:id/packing/:index/delete',allowRoles('traveler', 'admin'), checkForAuthentication,authorization, async (req, res) => {
+router.post('/:id/packing/:index/delete',allowRoles('traveler', 'admin'), checkForAuthentication, async (req, res) => {
   const trip = await TripPlan.findById(req.params.id);
   if (!trip) return res.status(404).send('Trip not found');
 
@@ -255,6 +261,37 @@ router.post('/:tripId/itinerary/delete/:day',allowRoles('traveler', 'admin'), ch
   await trip.save();
 
   res.redirect(`/trip-planner/${tripId}`);
+});
+
+
+router.post('/:tripId/delete', checkForAuthentication, allowRoles('traveler','admin'), async (req, res) => {
+  try {
+    const tripId = req.params.tripId;
+
+    // Check for active bookings (pending or accepted)
+    const activeBookings = await BookingRequest.find({
+      trip: tripId,
+      status: { $in: ['pending', 'accepted'] }
+    });
+
+    if (activeBookings.length > 0) {
+     
+      return res.redirect('/trip-planner');
+    }
+
+    // Delete rejected bookings associated with this trip
+    await BookingRequest.deleteMany({ trip: tripId, status: 'rejected' });
+
+    // Delete the trip
+    await TripPlan.findByIdAndDelete(tripId);
+
+    res.redirect('/trip-planner');
+
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Something went wrong while deleting the trip.');
+    res.redirect('/trip-planner');
+  }
 });
 
 module.exports= router;
