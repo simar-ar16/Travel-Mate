@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema({
   location: { type: String, default: '' }, 
   profileImage: { type: String, default: '' },
   aboutMe: { type: String, default: '' },
+  isVerified: { type: Boolean, default: false },
+  otp: { type: String },
+  otpExpires: { type: Date },
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
