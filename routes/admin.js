@@ -80,7 +80,11 @@ router.get('/destinations/edit/:id', checkAdmin, async (req, res) => {
 router.post('/destinations/edit/:id', checkAdmin, upload.single('image'), async (req, res) => {
   try {
     const { name, description, bestTimeToVisit,mustVisit } = req.body;
-    let updateData = { name, description, bestTimeToVisit , mustVisit};
+    const mustVisitArray = mustVisit
+      ? mustVisit.split(',').map(item => item.trim())
+      : [];
+
+    let updateData = { name, description, bestTimeToVisit , mustVisit: mustVisitArray};
 
     if (req.file) {
       updateData.imageUrl = req.file.path; // Cloudinary URL

@@ -84,7 +84,7 @@
 
     <div class="glass-card mb-4">
       <h4><i class="bi bi-info-circle"></i> Description:</h4>
-      <p><%= destination.description %></p>
+      <p style="white-space: pre-line;"><%= destination.description %></p>
 
       <h4><i class="bi bi-geo-alt-fill"></i> Must Visit Places:</h4>
       <% if (destination.mustVisit && Array.isArray(destination.mustVisit)) { %>
